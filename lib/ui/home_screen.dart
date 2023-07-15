@@ -123,18 +123,29 @@ Future<void> _onRefresh()async {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.end,
                                                 children: [
-                                                   InkWell(
-                                                     onTap: () {
-                                                       showModalBottomSheet<void>(
-                                                         context: context,
-                                                         builder: (BuildContext context) {
-                                                           return  AddUser(usersData:usersData,editBool:true);
+                                                   Row(
+                                                     children: [
+                                                       InkWell(
+                                                         onTap: () {
+                                                           showModalBottomSheet<void>(
+                                                             context: context,
+                                                             builder: (BuildContext context) {
+                                                               return  AddUser(usersData:usersData,editBool:true);
+                                                             },
+                                                           );
                                                          },
-                                                       );
-                                                     },
-                                                     child: Icon(
-                                                      Icons.edit,
+                                                         child: Icon(
+                                                          Icons.edit,
                                                   ),
+                                                       ),  SizedBox(width: 10,),InkWell(
+                                                         onTap: () {
+                                                           context.read<UserBloc>().deleteUsers(usersData?.id??0);
+                                                         },
+                                                         child: Icon(
+                                                          Icons.delete,
+                                                  ),
+                                                       ),
+                                                     ],
                                                    ),
                                                   Text(usersData?.phonenumber
                                                           .toString() ??

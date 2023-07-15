@@ -104,6 +104,8 @@ Future<void> updateUsers(User user) async {
     user.toMap(),
     where: '$COLUMN_ID = ?',
     whereArgs: [user.id],
+    conflictAlgorithm: ConflictAlgorithm.replace,
+
   );
 }
 
