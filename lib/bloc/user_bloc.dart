@@ -26,12 +26,16 @@ class UserBloc extends Cubit<UserState> {
   void updateUser(User user) async {
     await updateUsers(user);
     userList?.add(user);
+    userList = await getAllUsers();
+
     emit(UsersLoaded(userList ?? []));
   }
 
   void deleteUsers(int id) async {
     await deleteUser(id);
     userList?.remove(id);
+    // userList =[...userList!];
+    userList = await getAllUsers();
     emit(UsersLoaded(userList ?? []));
   }
 

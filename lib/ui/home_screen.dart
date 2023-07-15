@@ -21,7 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<UserBloc>().fetchLocalProduct();
   }
 Future<void> _onRefresh()async {
-  context.read<UserBloc>().fetchLocalProduct();
+    if(_searchController.text !=null){
+      context.read<UserBloc>().searchUser(_searchController.text, '');
+
+    }else{
+  context.read<UserBloc>().fetchLocalProduct();}
 
 }
   @override
@@ -35,8 +39,17 @@ Future<void> _onRefresh()async {
             InkWell(
                 onTap: () {
                   showModalBottomSheet<void>(
-                    isScrollControlled: true,
                     context: context,
+                    backgroundColor: Colors.white,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    isDismissible: true,
                     builder: (BuildContext context) {
                       return const AddUser();
                     },
@@ -129,7 +142,16 @@ Future<void> _onRefresh()async {
                                                          onTap: () {
                                                            showModalBottomSheet<void>(
                                                              context: context,
-                                                             builder: (BuildContext context) {
+                                                             backgroundColor: Colors.white,
+                                                             shape: const RoundedRectangleBorder(
+                                                               borderRadius: BorderRadius.vertical(
+                                                                 top: Radius.circular(20),
+                                                               ),
+                                                             ),
+                                                             clipBehavior: Clip.hardEdge,
+                                                             isScrollControlled: true,
+                                                             enableDrag: true,
+                                                             isDismissible: true,                                                             builder: (BuildContext context) {
                                                                return  AddUser(usersData:usersData,editBool:true);
                                                              },
                                                            );
