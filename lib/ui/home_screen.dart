@@ -156,10 +156,10 @@ Future<void> _onRefresh()async {
                                                              },
                                                            );
                                                          },
-                                                         child: Icon(
+                                                         child: const Icon(
                                                           Icons.edit,
                                                   ),
-                                                       ),  SizedBox(width: 10,),InkWell(
+                                                       ),  const SizedBox(width: 10,),InkWell(
                                                          onTap: () {
                                                            context.read<UserBloc>().deleteUsers(usersData?.id??0);
                                                          },

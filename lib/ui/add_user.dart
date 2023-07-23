@@ -1,8 +1,11 @@
 import 'package:demoapps/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+
 
 import '../database/model.dart';
+import '../utils/text_field_widget.dart';
 
 class AddUser extends StatefulWidget {
   final User? usersData;
@@ -20,8 +23,16 @@ class _AddUserState extends State<AddUser> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateOFJoinController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
+  final FocusNode _emailFocusNode =FocusNode();
+  final FocusNode _fullNameFocusNode =FocusNode();
+  final FocusNode _codeFocusNode =FocusNode();
+  final FocusNode _descriptionFocusNode =FocusNode();
+  final FocusNode _numberFocusNode =FocusNode();
   final UserBloc _userBloc = UserBloc();
-@override
+  var selectedDate ;
+
+  @override
   void initState() {
   _fullNameController.text=widget.usersData?.fullname??'';
   _emailController.text=widget.usersData?.email??'';
@@ -35,121 +46,120 @@ class _AddUserState extends State<AddUser> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom),
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              children: [
-                Spacer(),
-                TextButton(
-                    onPressed: () {
-                      if(widget.editBool ==true){context.read<UserBloc>().updateUser((User(
-                          id: widget.usersData?.id,
-                          fullname: _fullNameController.text,
-                          description: _descriptionController.text,
-                          dateofjoining:
-                          DateTime.now().microsecondsSinceEpoch.toString(),
-                          email: _emailController.text,
-                          employeecode: _emailController.text,
-                          phonenumber: _numberController.text)));}else{
-                        context.read<UserBloc>().addUpdateUser((User(
-                          fullname: _fullNameController.text,
-                          description: _descriptionController.text,
-                          dateofjoining:
-                              DateTime.now().microsecondsSinceEpoch.toString(),
-                          email: _emailController.text,
-                          employeecode: _emailController.text,
-                          phonenumber: _numberController.text)));
-                      }
-                      // insertUser(User(
-                      //   id: int.parse(uniqueId()),
-                      //     fullname: _fullNameController.text,
-                      //     description: _descriptionController.text,
-                      //     dateofjoining: '',
-                      //     email: _emailController.text,
-                      //     employeecode: _emailController.text,
-                      //     phonenumber: _nameController.text));
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: [
+                  Spacer(),
+                  TextButton(
+                      onPressed: () {
+                        if(widget.editBool ==true){context.read<UserBloc>().updateUser((User(
+                            id: widget.usersData?.id,
+                            fullname: _fullNameController.text,
+                            description: _descriptionController.text,
+                            dateofjoining:
+                            DateTime.now().microsecondsSinceEpoch.toString(),
+                            email: _emailController.text,
+                            employeecode: _emailController.text,
+                            phonenumber: _numberController.text)));}else{
+                          context.read<UserBloc>().addUpdateUser((User(
+                            fullname: _fullNameController.text,
+                            description: _descriptionController.text,
+                            dateofjoining:
+                               selectedDate.toString(),
+                            email: _emailController.text,
+                            employeecode: _emailController.text,
+                            phonenumber: _numberController.text)));
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Save')),
+                ],
+              ),
+              TextFieldWidget(
+                _emailController,
+                'Email',
+                _emailFocusNode,
+                textInputAction: TextInputAction.next,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+              TextFieldWidget(
+                _fullNameController,
+                'Full Name',
+                _fullNameFocusNode,
+                textInputAction: TextInputAction.next,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+              TextFieldWidget(
+                _codeController,
+                'Employee code',
+                _codeFocusNode,
+                textInputAction: TextInputAction.next,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+              TextFieldWidget(
+                _descriptionController,
+                'Designation',
+                _descriptionFocusNode,
+                textInputAction: TextInputAction.next,
+              ),
 
 
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Save')),
-              ],
-            ),
-            TextField(
-              controller: _emailController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
-                hintText: 'Enter Email',
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _fullNameController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Full Name',
-                hintText: 'Enter Your Full Name',
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _codeController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Employee code',
-                hintText: 'Enter Employee code',
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _descriptionController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Designation',
-                hintText: 'Enter Designation',
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _numberController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Phone Number',
-                hintText: 'Enter Phone Number',
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+              TextFieldWidget(
+                _numberController,
+                'Phone Number',
+                _numberFocusNode
+                ,
 
-            /*  DatePickerDialog(
-                                restorationId: 'date_picker_dialog',
-                                initialEntryMode: DatePickerEntryMode.calendarOnly,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2021),
-                                lastDate: DateTime(2022),
-                              ),*/
-          ],
+
+                textInputAction: TextInputAction.done,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () => _selectDate(context),
+                child:  Text(selectedDate ==null? 'Select date':selectedDate.toString()),
+              ),
+
+            ],
+          ),
         ),
       ),
     );
+  }
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        final String formatted = formatter.format(picked);
+        selectedDate = formatted;
+      });
+    }
   }
 }

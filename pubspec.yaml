@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   sqflite: ^2.2.8+4
   flutter_bloc: ^8.1.3
+  intl:
   uuid: ^3.0.4
 
 dev_dependencies:
